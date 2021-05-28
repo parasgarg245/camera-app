@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <video autoplay controls></video>
+
+    <script>
+      let video = document.querySelector("video");
+      let constraints = {
+        video: true, ////////yha audio b true kar skte basically capability btayga
+      };
+
+      navigator.mediaDevices // mediadevice naviagator ka child object hai jo humko access deta hai video bnane ka
+      
+        .getUserMedia(constraints) ////////function hai jo promise dega
+        .then(function (mediaStream) {
+          video.srcObject = mediaStream; // yha video k src mai mediastram daldia jo media stream ek url dega
+        });
+    </script>
+  </body>
+</html>
