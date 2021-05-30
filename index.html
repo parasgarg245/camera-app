@@ -9,19 +9,66 @@
 
   <body>
     <video autoplay controls></video>
+    <button>Record</button>
+    
 
     <script>
       let video = document.querySelector("video");
+      let btn=document.querySelector('button')
+      
       let constraints = {
         video: true, ////////yha audio b true kar skte basically capability btayga
+        audio:true
       };
-
+      
+      let mediaRecorder;
+      let isRecording=false;
+      let chunks=[]
+      
+      btn.addEventListener('click',()=>{
+        if(isRecording){
+          mediaRecorder.stop()
+          isRecording=false;
+          btn.innerText='Record'
+        }else{
+          mediaRecorder.start()
+          isRecording=true;
+          btn.innerText='Recording...'
+        }
+      })
+      
+      //navigator b ek object hai
       navigator.mediaDevices // mediadevice naviagator ka child object hai jo humko access deta hai video bnane ka
       
-        .getUserMedia(constraints) ////////function hai jo promise dega
+        .getUserMedia(constraints) ////////function hai jo promise dega arr constrainsts se hum ye bta pare hai ki vo vala device chaia jisse video mil jaye
         .then(function (mediaStream) {
           video.srcObject = mediaStream; // yha video k src mai mediastram daldia jo media stream ek url dega
-        });
+          let options = { mimeType: "video/webm; codecs=vp9" };
+          
+          mediaRecorder=new MediaRecorder(mediaStream,options)
+        
+          mediaRecorder.addEventListener('dataavailable',function(e){
+         
+            chunks.push(e.data)
+          
+          })
+          
+          mediaRecorder.addEventListener('stop',function(e){
+         
+            let blob=new Blob(chunks,{type:"video/mp4"}) /// large raw data 
+            chunks=[]
+            
+            let url=URL.createObjectURL(blob)
+            console.log(url)
+            let a=document.createElement('a')
+            a.href=url
+            a.download='video.mp4'
+            a.click()
+            a.remove()
+          })
+        
+        
+        }); 
     </script>
   </body>
 </html>
