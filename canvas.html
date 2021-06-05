@@ -25,16 +25,17 @@
 
       let ctx = canvas.getContext("2d");
       ctx.beginPath();
-      ctx.moveTo(100, 200); /// is cordianate par chle jao
-      ctx.lineTo(300, 400); // is cordinate tak line bnado jha cursor hai abhi that is 100 200
-      ctx.strokeStyle = "blue";
-      ctx.lineWidth = 20;
-      ctx.stroke();  //// show kardo jo b kara hai
-      ctx.beginPath(); // nya color bnanae k lia nya path bnaya hai
-      ctx.moveTo(300, 400);
-      ctx.lineTo(600, 200);
-      ctx.strokeStyle = "red"; 
-      ctx.stroke();
+      // ctx.fillStyle="red"
+      // ctx.fillRect(100,200,200,200)
+      // ctx.strokeRect(100,200,200,200) ----->to draw the rectangle starting cordianated are postions and then width and height
+      
+      let img=document.createElement('img')
+      img.src='img.jpg'
+      
+      img.addEventListener('load',()=>{
+          
+          ctx.drawImage(img,0,0)
+      })
     </script>
   </body>
 </html>
