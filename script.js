@@ -10,11 +10,18 @@ let video = document.querySelector("video");
       let body=document.querySelector('body')
       
       let filters=document.querySelectorAll('.filters');
-      
+      let zoomin=document.querySelector('.zoomin')
+      let zoomout=document.querySelector('.zoomout')
       
       let mediaRecorder;
       let isRecording=false;
       let chunks=[]
+      
+      
+      let minzoom=1;
+      let maxzoom=3;
+      let currzoom=1;
+      
       
       let filter=""  //////canvas par use kar paye image par colour dalne k lia
       for(let i=0;i<filters.length;i++){
@@ -24,6 +31,26 @@ let video = document.querySelector("video");
             addFilter(filter);
           })
       }
+      
+      
+      
+      zoomin.addEventListener('click',()=>{
+        if(currzoom<maxzoom){
+          currzoom++;
+          video.style.transform=`scale(${currzoom})`
+        }
+        
+      })
+      
+      zoomout.addEventListener('click',()=>{
+        if(currzoom>minzoom){
+          currzoom--;
+          video.style.transform=`scale(${currzoom})`
+          
+        }
+        
+      })
+      
       
       
       
@@ -40,7 +67,8 @@ let video = document.querySelector("video");
           mediaRecorder.start()
           isRecording=true;
           innerbtn.classList.add('record-animation')
-     
+          currzoom=1
+          video.style.transform=`style(${currzoom})`
         }
       })
       
@@ -100,6 +128,11 @@ let video = document.querySelector("video");
             c.height=video.videoHeight
             
             let ctx=c.getContext('2d')
+            
+            ctx.translate(c.width/2,c.height/2)
+            ctx.scale(currzoom,currzoom)
+            ctx.translate(-c.width/2,-c.height/2)
+            
             
             ctx.drawImage(video,0,0)
             if(filter!=""){
