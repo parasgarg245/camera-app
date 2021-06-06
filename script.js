@@ -7,18 +7,36 @@ let video = document.querySelector("video");
         audio:true
       };
       
+      let body=document.querySelector('body')
+      
+      let filters=document.querySelectorAll('.filters');
+      
+      
       let mediaRecorder;
       let isRecording=false;
       let chunks=[]
+      
+      let filter=""  //////canvas par use kar paye image par colour dalne k lia
+      for(let i=0;i<filters.length;i++){
+          filters[i].addEventListener('click',(e)=>{
+            filter=e.currentTarget.style.backgroundColor;
+            removeFilter();
+            addFilter(filter);
+          })
+      }
+      
+      
       
       vidbtn.addEventListener('click',()=>{
         let innerbtn=vidbtn.querySelector('div')
         if(isRecording){
           mediaRecorder.stop()
           isRecording=false;
-          innerbtn.classList.remove('record-animation')
+          innerbtn.classList.remove('record-animation') 
     
         }else{
+          filter=""
+          removeFilter()
           mediaRecorder.start()
           isRecording=true;
           innerbtn.classList.add('record-animation')
@@ -84,10 +102,34 @@ let video = document.querySelector("video");
             let ctx=c.getContext('2d')
             
             ctx.drawImage(video,0,0)
+            if(filter!=""){
+              ctx.fillStyle=filter;
+              ctx.fillRect(0,0,c.width,c.height)
+            }
+            
+            
+            ///download karne k lia
             let a=document.createElement('a')
             a.download='image.png'
             a.href=c.toDataURL()
             a.click()
             a.remove()
         
+        }
+        
+        
+        
+        function addFilter(filter){
+          let filterDiv=document.createElement('div');
+          filterDiv.classList.add('filter-div');
+          filterDiv.style.backgroundColor=filter
+          body.appendChild(filterDiv)
+        }
+        
+        
+        function removeFilter(){
+          
+          let filterDiv=document.querySelector('.filter-div');
+          if(filterDiv!=null)
+          filterDiv.remove();
         }
