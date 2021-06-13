@@ -103,6 +103,8 @@ let video = document.querySelector("video");
           mediaRecorder.addEventListener('stop',function(e){
          
             let blob=new Blob(chunks,{type:"video/mp4"}) /// large raw data 
+            
+            addMedia('vid',blob)
             chunks=[]
             
             let url=URL.createObjectURL(blob)
@@ -145,6 +147,8 @@ let video = document.querySelector("video");
             let a=document.createElement('a')
             a.download='image.png'
             a.href=c.toDataURL()
+            
+            addMedia('img',c.toDataURL());
             a.click()
             a.remove()
         
